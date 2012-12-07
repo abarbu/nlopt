@@ -1,0 +1,174 @@
+= NLopt =
+
+This is a Chicken Scheme egg which provides bindings to NLopt, a library for non-linear optimization. http://ab-initio.mit.edu/wiki/index.php/NLopt
+
+==== High-level setup ====
+
+:(nlopt:optimize algorithm initial f)
+
+Call ''f'', a function that will be passed an NLopt optimizer object
+and will set up the optimization problem, run the algorithm specificed
+with the initial starting position give. It returns a 3-vector: final
+paramters, final objective value, reason for exit. The reason for
+exiting is currently just an integer, see section on Errors.
+
+result. Keep
+in mind that the optimizer may have failed, but a result is always
+provided.
+
+:(nlopt:srand seed)
+:(nlopt:srand-time)
+
+Some NLopt algorithm generate random values, this sets the seed for
+the random number generator. The latter uses the current clock time.
+
+:(nlopt:get-algorithm nlopt)
+:(nlopt:get-dimension nlopt)
+
+Find the algorithm or arity of an nlopt object.
+
+==== High-level optimization ====
+
+:(nlopt:set-min-objective nlopt f)
+:(nlopt:set-max-objective nlopt f)
+
+Ask the optimizer to minimize or maximize ''f''.
+
+:nlopt:set-lower-bounds
+:nlopt:set-lower-bounds1
+:nlopt:set-upper-bounds
+:nlopt:set-upper-bounds1
+:nlopt:remove-inequality-constraints
+:nlopt:add-inequality-constraint
+:nlopt:remove-equality-constraints
+:nlopt:add-equality-constraint
+:nlopt:set-stopval
+:nlopt:get-stopval
+:nlopt:set-ftol-rel
+:nlopt:get-ftol-rel
+:nlopt:set-ftol-abs
+:nlopt:get-ftol-abs
+:nlopt:set-xtol-rel
+:nlopt:get-xtol-rel
+:nlopt:set-xtol-abs1
+:nlopt:set-xtol-abs
+:nlopt:get-xtol-abs
+:nlopt:set-maxeval
+:nlopt:get-maxeval
+:nlopt:set-maxtime
+:nlopt:get-maxtime
+:nlopt:force-stop
+:nlopt:set-force-stop
+:nlopt:get-force-stop
+:nlopt:set-local-optimizer
+:nlopt:set-population
+:nlopt:get-population
+:nlopt:set-default-initial-step
+:nlopt:set-initial-step
+:nlopt:set-initial-step1
+:nlopt:get-initial-step
+
+These calls correspond well to those in NLopt.
+
+TODO: nlopt:add-inequality-mconstraint nlopt:add-equality-mconstraint
+
+==== Low-level ====
+
+:(nlopt:create algorithm arity)
+
+Create a new NLopt object for an optimizer of a particular arity using
+the algorithm provided.
+
+:(nlopt:destroy nlopt)
+:(nlopt:copy nlopt)
+
+Delete and copy an NLopt object.
+
+:(with-nlopt kind arg f)
+:(nlopt:optimize-now nlopt initial)
+:(nlopt:wrap-single f)
+
+These are implementation details users should not have to worry about.
+
+==== Algorithms ====
+
+: nlopt:gn-direct
+: nlopt:gn-direct-l
+: nlopt:gn-direct-l-rand
+: nlopt:gn-direct-noscal
+: nlopt:gn-direct-l-noscal
+: nlopt:gn-direct-l-rand-noscal
+: nlopt:gn-orig-direct
+: nlopt:gn-orig-direct-l
+: nlopt:gd-stogo
+: nlopt:gd-stogo-rand
+: nlopt:ld-lbfgs-nocedal
+: nlopt:ld-lbfgs
+: nlopt:ln-praxis
+: nlopt:ld-var1
+: nlopt:ld-var2
+: nlopt:ld-tnewton
+: nlopt:ld-tnewton-restart
+: nlopt:ld-tnewton-precond
+: nlopt:ld-tnewton-precond-restart
+: nlopt:gn-crs2-lm
+: nlopt:gn-mlsl
+: nlopt:gd-mlsl
+: nlopt:gn-mlsl-lds
+: nlopt:gd-mlsl-lds
+: nlopt:ld-mma
+: nlopt:ln-cobyla
+: nlopt:ln-newuoa
+: nlopt:ln-newuoa_bound
+: nlopt:ln-neldermead
+: nlopt:ln-sbplx
+: nlopt:ln-auglag
+: nlopt:ld-auglag
+: nlopt:ln-auglag-eq
+: nlopt:ld-auglag-eq
+: nlopt:ln-bobyqa
+: nlopt:gn-isres
+: nlopt:auglag
+: nlopt:auglag-eq
+: nlopt:g-mlsl
+: nlopt:g-mlsl-lds
+: nlopt:ld-slsqp
+
+==== Errors ====
+
+Error handling is very basic and left almsot entirely to the
+user. These error codes may be returned by nlopt:optimize as the last
+element of the 3-vector it returns.
+
+nlopt:failure
+nlopt:invalid-args
+nlopt:out-of-memory
+nlopt:roundoff-limited
+nlopt:forced-stop
+nlopt:success
+nlopt:stopval-reached
+nlopt:ftol-reached
+nlopt:xtol-reached
+nlopt:maxeval-reached
+nlopt:maxtime-reached
+
+==== Misc ====
+
+:(nlopt:algorithm-name algorithm)
+
+Produce the name of the algorithm provided as a string.
+
+=== License ===
+
+Copyright 2012 Purdue University. All rights reserved.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see http://www.gnu.org/licenses.
+__NOTOC__
