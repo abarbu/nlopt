@@ -1,0 +1,178 @@
+[[tags: egg gui]]
+[[toc:]]
+
+Do not edit this page, it is maintained in the this package's [https://github.com/abarbu/nlopt github repository].
+
+= NLopt =
+
+This is a Chicken Scheme egg which provides bindings to NLopt, a library for non-linear optimization. http://ab-initio.mit.edu/wiki/index.php/NLopt
+
+==== High-level setup ====
+
+<procedure>(nlopt:optimize algorithm initial f)</procedure>
+
+Call ''f'', a function that will be passed an NLopt optimizer object
+and will set up the optimization problem, run the algorithm specificed
+with the initial starting position give. It returns a 3-vector: final
+paramters, final objective value, reason for exit. The reason for
+exiting is currently just an integer, see section on Errors.
+
+result. Keep
+in mind that the optimizer may have failed, but a result is always
+provided.
+
+<procedure>(nlopt:srand seed)</procedure>
+<procedure>(nlopt:srand-time)</procedure>
+
+Some NLopt algorithm generate random values, this sets the seed for
+the random number generator. The latter uses the current clock time.
+
+<procedure>(nlopt:get-algorithm nlopt)</procedure>
+<procedure>(nlopt:get-dimension nlopt)</procedure>
+
+Find the algorithm or arity of an nlopt object.
+
+==== High-level optimization ====
+
+<procedure>(nlopt:set-min-objective nlopt f)</procedure>
+<procedure>(nlopt:set-max-objective nlopt f)</procedure>
+
+Ask the optimizer to minimize or maximize ''f''.
+
+<procedure>nlopt:set-lower-bounds</procedure>
+<procedure>nlopt:set-lower-bounds1</procedure>
+<procedure>nlopt:set-upper-bounds</procedure>
+<procedure>nlopt:set-upper-bounds1</procedure>
+<procedure>nlopt:remove-inequality-constraints</procedure>
+<procedure>nlopt:add-inequality-constraint</procedure>
+<procedure>nlopt:remove-equality-constraints</procedure>
+<procedure>nlopt:add-equality-constraint</procedure>
+<procedure>nlopt:set-stopval</procedure>
+<procedure>nlopt:get-stopval</procedure>
+<procedure>nlopt:set-ftol-rel</procedure>
+<procedure>nlopt:get-ftol-rel</procedure>
+<procedure>nlopt:set-ftol-abs</procedure>
+<procedure>nlopt:get-ftol-abs</procedure>
+<procedure>nlopt:set-xtol-rel</procedure>
+<procedure>nlopt:get-xtol-rel</procedure>
+<procedure>nlopt:set-xtol-abs1</procedure>
+<procedure>nlopt:set-xtol-abs</procedure>
+<procedure>nlopt:get-xtol-abs</procedure>
+<procedure>nlopt:set-maxeval</procedure>
+<procedure>nlopt:get-maxeval</procedure>
+<procedure>nlopt:set-maxtime</procedure>
+<procedure>nlopt:get-maxtime</procedure>
+<procedure>nlopt:force-stop</procedure>
+<procedure>nlopt:set-force-stop</procedure>
+<procedure>nlopt:get-force-stop</procedure>
+<procedure>nlopt:set-local-optimizer</procedure>
+<procedure>nlopt:set-population</procedure>
+<procedure>nlopt:get-population</procedure>
+<procedure>nlopt:set-default-initial-step</procedure>
+<procedure>nlopt:set-initial-step</procedure>
+<procedure>nlopt:set-initial-step1</procedure>
+<procedure>nlopt:get-initial-step</procedure>
+
+These calls correspond well to those in NLopt.
+
+TODO: nlopt:add-inequality-mconstraint nlopt:add-equality-mconstraint
+
+==== Low-level ====
+
+<procedure>(nlopt:create algorithm arity)</procedure>
+
+Create a new NLopt object for an optimizer of a particular arity using
+the algorithm provided.
+
+<procedure>(nlopt:destroy nlopt)</procedure>
+<procedure>(nlopt:copy nlopt)</procedure>
+
+Delete and copy an NLopt object.
+
+<procedure>(with-nlopt kind arg f)</procedure>
+<procedure>(nlopt:optimize-now nlopt initial)</procedure>
+<procedure>(nlopt:wrap-single f)</procedure>
+
+These are implementation details users should not have to worry about.
+
+==== Algorithms ====
+
+: nlopt:gn-direct
+: nlopt:gn-direct-l
+: nlopt:gn-direct-l-rand
+: nlopt:gn-direct-noscal
+: nlopt:gn-direct-l-noscal
+: nlopt:gn-direct-l-rand-noscal
+: nlopt:gn-orig-direct
+: nlopt:gn-orig-direct-l
+: nlopt:gd-stogo
+: nlopt:gd-stogo-rand
+: nlopt:ld-lbfgs-nocedal
+: nlopt:ld-lbfgs
+: nlopt:ln-praxis
+: nlopt:ld-var1
+: nlopt:ld-var2
+: nlopt:ld-tnewton
+: nlopt:ld-tnewton-restart
+: nlopt:ld-tnewton-precond
+: nlopt:ld-tnewton-precond-restart
+: nlopt:gn-crs2-lm
+: nlopt:gn-mlsl
+: nlopt:gd-mlsl
+: nlopt:gn-mlsl-lds
+: nlopt:gd-mlsl-lds
+: nlopt:ld-mma
+: nlopt:ln-cobyla
+: nlopt:ln-newuoa
+: nlopt:ln-newuoa_bound
+: nlopt:ln-neldermead
+: nlopt:ln-sbplx
+: nlopt:ln-auglag
+: nlopt:ld-auglag
+: nlopt:ln-auglag-eq
+: nlopt:ld-auglag-eq
+: nlopt:ln-bobyqa
+: nlopt:gn-isres
+: nlopt:auglag
+: nlopt:auglag-eq
+: nlopt:g-mlsl
+: nlopt:g-mlsl-lds
+: nlopt:ld-slsqp
+
+==== Errors ====
+
+Error handling is very basic and left almsot entirely to the
+user. These error codes may be returned by nlopt:optimize as the last
+element of the 3-vector it returns.
+
+nlopt:failure
+nlopt:invalid-args
+nlopt:out-of-memory
+nlopt:roundoff-limited
+nlopt:forced-stop
+nlopt:success
+nlopt:stopval-reached
+nlopt:ftol-reached
+nlopt:xtol-reached
+nlopt:maxeval-reached
+nlopt:maxtime-reached
+
+==== Misc ====
+
+<procedure>(nlopt:algorithm-name algorithm)</procedure>
+
+Produce the name of the algorithm provided as a string.
+
+=== License ===
+
+Copyright 2012 Purdue University. All rights reserved.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see http://www.gnu.org/licenses.

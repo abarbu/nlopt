@@ -1,0 +1,10 @@
+;;;  -*- Hen -*-
+
+(use setup-helper-mod)
+
+(verify-extension-name "nlopt")
+
+(setup-shared-extension-module 'nlopt (extension-version "1.0")
+  #:inline? #t #:types? #t
+  #:compile-options '(-d2 -lnlopt -lm)
+  #:install-options '((examples "nlopt-examples.scm")))
