@@ -4,7 +4,16 @@
 
 (verify-extension-name "nlopt")
 
+(run ("wget -c http://ab-initio.mit.edu/nlopt/nlopt-2.3.tar.gz;"
+      "tar xvf nlopt-2.3.tar.gz;"
+      "cd nlopt-2.3;"
+      "./configure --without-guile --without-octave --without-python --without-matlab --enable-static --enable-shared;"
+      "make -j4;"))
+
 (setup-shared-extension-module 'nlopt (extension-version "1.0")
   #:inline? #t #:types? #t
-  #:compile-options '(-d2 -lnlopt -lm)
+  #:compile-options '(-d2 -lm -Inlopt-2.3/api
+                          -C -shared
+                          -C -fPIC
+                          nlopt-2.3/.libs/libnlopt.a)
   #:install-options '((examples "nlopt-examples.scm")))
